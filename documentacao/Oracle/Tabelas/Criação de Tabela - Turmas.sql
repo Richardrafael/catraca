@@ -1,0 +1,50 @@
+/* DOCUMENTAÇÃO DE TABELAS DO PROJETO */
+/*  Tabela de TURMAS */
+
+--DROPANDO TABELA
+DROP TABLE port_catraca.TURMAS;
+
+--CRIANDO TABELA
+CREATE TABLE port_catraca.TURMAS(
+CD_TURMA            INT NOT NULL,
+NM_TURMA            VARCHAR(80) NOT NULL,
+SN_ATIVO            VARCHAR(1),
+HR_INICIO           VARCHAR(5) NOT NULL,
+HR_FIM              VARCHAR(5) NOT NULL,
+SN_DOM              VARCHAR(1),
+SN_SEG              VARCHAR(1),
+SN_TER              VARCHAR(1),
+SN_QUA              VARCHAR(1),
+SN_QUI              VARCHAR(1),
+SN_SEX              VARCHAR(1),
+SN_SAB              VARCHAR(1),
+CD_USUARIO_CADASTRO VARCHAR(12),
+HR_CADASTRO         TIMESTAMP,
+CD_USUARIO_ULT_ALT  VARCHAR(12),
+HR_ULT_ALT          TIMESTAMP,
+
+--PK
+CONSTRAINT PK_CD_TURMA PRIMARY KEY (CD_TURMA)
+
+);
+
+--SEQUENCE  
+DROP SEQUENCE port_catraca.SEQ_CD_TURMA;
+
+CREATE SEQUENCE port_catraca.SEQ_CD_TURMA  
+START WITH 1    
+INCREMENT BY 1
+NOCACHE
+NOCYCLE;
+
+--SELECT
+SELECT * FROM port_catraca.TURMAS tur ORDER BY tur.CD_TURMA
+
+DELETE FROM port_catraca.TURMAS turmas WHERE turmas.CD_TURMA = 8
+
+SELECT turmas.CD_TURMA, turmas.NM_TURMA, turmas.SN_ATIVO
+FROM port_catraca.TURMAS turmas
+
+UPDATE port_catraca.TURMAS turmas
+SET turmas.SN_ATIVO = 'I'
+WHERE turmas.CD_TURMA = '5'

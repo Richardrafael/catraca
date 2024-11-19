@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        <style>
+            .container-custom-combobox{
+                max-width: 220px;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .combo-search{
+                width: 100%;
+            }
+            .datalist-custom-combobox{
+                display: none;
+                max-height: 100px;
+                overflow-y: scroll;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container-custom-combobox">
+            <label>Tipo:</label>
+            <div>
+                <input type="text" id="combo-search" class="combo-search" placeholder="Digite para pesquisar">
+                <div id="type-list" class="datalist-custom-combobox">
+                    <div class="option" data-value="A">Acompanhantes</div>
+                    <div class="option" data-value="AL">Alunos</div>
+                    <div class="option" data-value="F">Funcionários</div>
+                    <div class="option" data-value="M">Médicos</div>
+                    <div class="option" data-value="P">Pacientes</div>
+                    <div class="option" data-value="PR">Prestadores</div>
+                    <div class="option" data-value="T">Terceiros</div>
+                    <div class="option" data-value="V">Visitantes</div>
+                    <div class="option" data-value="VE">Visitantes Externos</div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    <script>
+        const input = document.getElementById("combo-search");
+        const datalist = document.getElementById("type-list");
+        const options = datalist.querySelectorAll(".option");
+        let selectedItems = [];
+
+        document.addEventListener("click", function(event) {
+            if (event.target != input && event.target != datalist) {
+                datalist.style.display = "none";
+            }else{
+                datalist.style.display = "block";
+            }
+        });
+
+        input.addEventListener("input", function() {
+            const inputValue = input.value.toLowerCase();
+
+            options.forEach(option => {
+                const optionValue = option.getAttribute("data-value").toLowerCase();
+                if (optionValue.includes(inputValue)) {
+                    option.style.display = "block";
+                } else {
+                    option.style.display = "none";
+                }
+            });
+        });
+
+        options.forEach(option => {
+            option.addEventListener("click", function() {
+                event.stopPropagation();
+                const selectedValue = option.getAttribute("data-value");
+                if (!isSelected(selectedValue)) {
+                    selectedItems.push(selectedValue);
+                    option.style.backgroundColor = "LightBlue";
+                }else{
+                    const index = selectedItems.findIndex(item => item === selectedValue);
+                    if (index !== -1) {
+                        selectedItems.splice(index, 1);
+                    }
+                    option.style.backgroundColor = "white";
+                }
+            });
+        });
+
+        function isSelected(value) {
+            for (const item of selectedItems) {
+                if (item == value) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    </script>
+</html>

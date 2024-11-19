@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        <style>
+            .selected-item {
+                display: inline-block;
+                background-color: #f0f0f0;
+                padding: 2px 5px;
+                margin-right: 5px;
+                border-radius: 5px;
+            }
+            .remove-button {
+                cursor: pointer;
+                color: red;
+                margin-left: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <label>Tipo:</label>
+            <input type="text" id="combo-search" placeholder="Digite para pesquisar">
+            <div id="type-list" class="datalist">
+                <div class="option" data-value="A">Acompanhantes</div>
+                <div class="option" data-value="AL">Alunos</div>
+                <div class="option" data-value="F">Funcionários</div>
+                <div class="option" data-value="M">Médicos</div>
+                <div class="option" data-value="P">Pacientes</div>
+                <div class="option" data-value="PR">Prestadores</div>
+                <div class="option" data-value="T">Terceiros</div>
+                <div class="option" data-value="V">Visitantes</div>
+                <div class="option" data-value="VE">Visitantes Externos</div>
+            </div>
+
+            <div id="selected-items"></div>
+        </div>
+    </body>
+
+    <script>
+        $(document).ready(function() {
+            
+        });
+
+        const input = document.getElementById("combo-search");
+        const datalist = document.getElementById("type-list");
+        const options = datalist.querySelectorAll(".option");
+        const selectedItemsContainer = document.getElementById("selected-items");
+
+        input.addEventListener("input", function() {
+            const inputValue = input.value.toLowerCase();
+
+            options.forEach(option => {
+                const optionValue = option.getAttribute("data-value").toLowerCase();
+                if (optionValue.includes(inputValue)) {
+                    option.style.display = "block";
+                } else {
+                    option.style.display = "none";
+                }
+            });
+        });
+
+        options.forEach(option => {
+            option.addEventListener("click", function() {
+                const selectedValue = option.getAttribute("data-value");
+                
+                if (!isSelected(selectedValue)) {
+                    const selectedItem = document.createElement("div");
+                    selectedItem.classList.add("selected-item");
+                    selectedItem.textContent = selectedValue;
+                    
+                    const removeButton = document.createElement("span");
+                    removeButton.classList.add("remove-button");
+                    removeButton.textContent = "x";
+                    removeButton.addEventListener("click", function() {
+                        selectedItemsContainer.removeChild(selectedItem);
+                        option.style.display = "block";
+                    });
+                    
+                    selectedItem.appendChild(removeButton);
+                    selectedItemsContainer.appendChild(selectedItem);
+                    
+                    option.style.display = "none";
+                }
+
+                input.value = "";
+            });
+        });
+
+        function isSelected(value) {
+            const selectedItems = selectedItemsContainer.querySelectorAll(".selected-item");
+            for (const item of selectedItems) {
+                if (item.textContent === value) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    </script>
+</html>

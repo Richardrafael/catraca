@@ -1,0 +1,19 @@
+/* DOCUMENTAÇÃO DE TRIGGER DO PROJETO */
+/*  Trigger Crachas de Alunos do IEP na Tabela de Crachas */
+CREATE OR REPLACE TRIGGER port_catraca.TRG__CADASTRO_CRACHA_IEP
+BEFORE INSERT OR DELETE
+ON port_catraca.ALUNOS
+REFERENCING NEW AS NEW OLD AS OLD
+  FOR EACH ROW
+BEGIN
+   IF Inserting THEN
+     INSERT INTO port_catraca.CRACHAS
+     SELECT port_catraca.SEQ_CRACHA_CATRACA.NEXTVAL AS CD_REGISTRO,
+            :new.CD_CRACHA AS CD_CRACHA,
+            'A' AS TIPO,
+            '6' AS CD_CATRACA,
+            :new.CD_USUARIO_CADASTRO AS CD_USUARIO_CADASTRO,
+            SYSDATE AS HR_CADASTRO
+     FROM DUAL;
+   END IF;
+END;
